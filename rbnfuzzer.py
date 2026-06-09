@@ -10,5 +10,5 @@ parser: argparse.ArgumentParser = argparse.ArgumentParser(prog='Fuzzer',
 parser.add_argument('-u', '--url')
 parser.add_argument('-w', '--wordlist')
 
-args: argparse.Namespace = parser.parse_args()  #  <- Lê o sys.argv (O que foi digitado pelo usuário) e devolve um Namespace com os valores
+args: argparse.Namespace = parser.parse_args()
 
