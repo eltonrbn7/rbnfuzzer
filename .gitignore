@@ -1,0 +1,7 @@
+annotations.md
+wordlist.txt
+.env
+.envrc
+.venv
+env/
+venv/
