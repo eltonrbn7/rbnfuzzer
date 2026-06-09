@@ -1,5 +1,6 @@
 import argparse
 import requests
+import sys
 
 def get_args() -> argparse.Namespace:
     parser: argparse.ArgumentParser = argparse.ArgumentParser(prog='Fuzzer',
@@ -9,8 +10,13 @@ def get_args() -> argparse.Namespace:
 
     parser.add_argument('-u', '--url', required=True)
     parser.add_argument('-w', '--wordlist', required=True)
+    parser.add_argument('-tc', '--timeconnect', required=False, type=float, default=3.0)
+    parser.add_argument('-tr', '--timeread', required=False, type=float, default=5.0)
 
     args: argparse.Namespace = parser.parse_args()
+    if args.timeconnect <= 0 or args.timeread <= 0:
+        print('Timeout values must be greater than 0')
+        sys.exit(1)
 
     return args
 
@@ -32,23 +38,26 @@ def read_wordlist(path: str) -> list[str]:
     return words
 
 
-def probe(url: str, wdl: str) -> None:
+def probe(url: str, wdl: list[str], timeout: tuple) -> None:
 
     url = url.rstrip('/')
     paths = [url + "/" + word for word in wdl]
 
-
     for path in paths:
         try:
-            req = requests.get(path)
+            req = requests.get(path, timeout=timeout)
             status_code = req.status_code
             print(f'Route: {path}  -  Status Code: {status_code}')
 
         except requests.exceptions.MissingSchema:
             print(f'Invalid URL {path}: No scheme supplied. Perhaps you meant https://{path}')
+        except requests.exceptions.ConnectTimeout:
+            print(f'Connect Timeout Error: {path}')
+        except requests.exceptions.ReadTimeout:
+            print(f'Read Timeout Error: {path}')
 
 
 if __name__ == "__main__":
     args = get_args()
     words = read_wordlist(path=args.wordlist)
-    probehttp = probe(url=args.url, wdl=words)
+    probe(url=args.url, wdl=words, timeout=(args.timeconnect, args.timeread))
