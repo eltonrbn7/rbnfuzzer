@@ -5,3 +5,4 @@ wordlist.txt
 .venv
 env/
 venv/
+*.json
