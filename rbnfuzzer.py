@@ -3,6 +3,19 @@ import requests
 import sys
 import json
 
+def banner() -> None:
+    print(r"""
+          _            __                        
+     _ __| |__  _ __  / _|_   _ ___________ _ __ 
+    | '__| '_ \| '_ \| |_| | | |_  /_  / _ \ '__|
+    | |  | |_) | | | |  _| |_| |/ / / /  __/ |   
+    |_|  |_.__/|_| |_|_|  \__,_/___/___\___|_|   
+    
+    rbnfuzzer v0.1  |  by elton ribeiro
+    HTTP directory fuzzer
+    """)
+
+
 def get_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(prog='Fuzzer',
                                     description='Fuzzing for directories list',
@@ -78,6 +91,7 @@ def save_output(results: list[dict], output: str) -> None:
 
 
 if __name__ == "__main__":
+    banner()
     args = get_args()
     words = read_wordlist(path=args.wordlist)
     results = probe(url=args.url, wdl=words, timeout=(args.timeconnect, args.timeread))
