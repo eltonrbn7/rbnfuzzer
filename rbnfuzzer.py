@@ -10,7 +10,7 @@ def banner() -> None:
     | '__| '_ \| '_ \| |_| | | |_  /_  / _ \ '__|
     | |  | |_) | | | |  _| |_| |/ / / /  __/ |   
     |_|  |_.__/|_| |_|_|  \__,_/___/___\___|_|   
-    
+         
     rbnfuzzer v0.1  |  by elton ribeiro
     HTTP directory fuzzer
     """)
